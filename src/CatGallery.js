@@ -10,32 +10,22 @@ export default function CatGallery() {
   const [breeds, setBreeds] = useState([]);
   const [selectedBreed, setSelectedBreed] = useState("");
 
-  // Fetch Cats
+  // Fetch cat images
   const fetchCats = async () => {
-    try {
-      let url = `${API_URL}?limit=9&api_key=${API_KEY}`;
-      if (selectedBreed) url += `&breed_ids=${selectedBreed}`;
-      const res = await fetch(url);
-      const data = await res.json();
-      setCats(data);
-    } catch (error) {
-      console.error("Error fetching cats:", error);
-    }
+    let url = `${API_URL}?limit=9&api_key=${API_KEY}`;
+    if (selectedBreed) url += `&breed_ids=${selectedBreed}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    setCats(data); // Corrected to update state properly
   };
 
-  // Fetch Breeds
-  const fetchBreeds = async () => {
-    try {
+  // Fetch cat breeds
+  useEffect(() => {
+    const fetchBreeds = async () => {
       const res = await fetch(`${BREEDS_URL}?api_key=${API_KEY}`);
       const data = await res.json();
       setBreeds(data);
-    } catch (error) {
-      console.error("Error fetching breeds:", error);
-    }
-  };
-
-  // Fetch breeds once on mount
-  useEffect(() => {
+    };
     fetchBreeds();
   }, []);
 
